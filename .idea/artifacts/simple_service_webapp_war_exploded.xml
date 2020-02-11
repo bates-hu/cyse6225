@@ -33,6 +33,14 @@
           <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-api:2.6.1" />
           <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-utils:2.6.1" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.25.0-GA" />
+          <element id="library" level="project" name="Maven: org.glassfish.jersey.media:jersey-media-json-jackson:2.25" />
+          <element id="library" level="project" name="Maven: org.glassfish.jersey.ext:jersey-entity-filtering:2.30" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:2.8.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.4" />
         </element>
       </element>
       <element id="directory" name="META-INF">
