@@ -1,8 +1,10 @@
 <html>
 <body>
-    <h2>Jersey RESTful Web Application!</h2>
-    <p><a href="webapi/myresource">Jersey resource</a>
-    <p>Visit <a href="http://jersey.java.net">Project Jersey website</a>
-    for more information on Jersey!
+    <h2>csye6225 lab work</h2>
+    <p><a href="webapi/professors">all professors</a>
+    <p><a href="webapi/lectures">all lectures</a>
+    <p><a href="webapi/programs">all programs</a>
+    <p><a href="webapi/students">all students</a>
+    <p><a href="webapi/courses">all courses</a>
 </body>
 </html>
