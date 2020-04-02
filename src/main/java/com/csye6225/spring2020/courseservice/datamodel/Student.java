@@ -1,71 +1,95 @@
 package com.csye6225.spring2020.courseservice.datamodel;
 
-import java.util.List;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
+import java.util.Date;
+import java.util.Set;
 
-public class Student {
-    private Long id;
-    private String name;
-    private String imageUrl;
-    private List<Long> enrolledCourses;
-    private Long program;
+@DynamoDBTable(tableName="Student")
+public class Student extends IdObject{
+    private String firstName;
+    private String lastName;
+    private Date joiningDate;
+    private String department;
+    private Set<String> registeredCourses;
 
     public Student() {}
 
-    public Student(String name, String imageUrl, Long program) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.program = program;
+    public Student(String id, String firstName, String lastName, Date joiningDate, String department, Set<String> registeredCourses) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.joiningDate = joiningDate;
+        this.department = department;
+        this.registeredCourses = registeredCourses;
+    }
+
+    @DynamoDBHashKey(attributeName = "id")
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @DynamoDBAttribute(attributeName="firstName")
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @DynamoDBAttribute(attributeName="lastName")
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    @DynamoDBAttribute(attributeName="joiningDate")
+    public Date getJoiningDate() {
+        return joiningDate;
+    }
+
+    public void setJoiningDate(Date joiningDate) {
+        this.joiningDate = joiningDate;
+    }
+
+    @DynamoDBAttribute(attributeName="department")
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    @DynamoDBAttribute(attributeName="registeredCourses")
+    public Set<String> getRegisteredCourses() {
+        return registeredCourses;
+    }
+
+    public void setRegisteredCourses(Set<String> registeredCourses) {
+        this.registeredCourses = registeredCourses;
     }
 
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", enrolledCourses=" + enrolledCourses +
-                ", program='" + program + '\'' +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", joiningDate=" + joiningDate +
+                ", department='" + department + '\'' +
+                ", registeredCourses=" + registeredCourses +
                 '}';
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public List<Long> getEnrolledCourses() {
-        return enrolledCourses;
-    }
-
-    public void setEnrolledCourses(List<Long> enrolledCourses) {
-        this.enrolledCourses = enrolledCourses;
-    }
-
-    public Long getProgram() {
-        return program;
-    }
-
-    public void setProgram(Long program) {
-        this.program = program;
     }
 }

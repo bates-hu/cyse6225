@@ -1,71 +1,92 @@
 package com.csye6225.spring2020.courseservice.datamodel;
 
-import java.util.List;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-public class Course {
-    private Long id;
-    private String board;
-//    private List<String> roaster;
-    private List<Long> enrolledStudents;
-    private Long associatedProfessor;
-    private Long teachAssistant;
+import java.util.Set;
+
+@DynamoDBTable(tableName="Course")
+public class Course extends IdObject{
+    private String boardId;
+    private String professorId;
+    private String taId;
+    private Set<String> enrolledStudents;
+    private String department;
 
     public Course() {}
 
-    public Course(String board, Long associatedProfessor, Long teachAssistant) {
-        this.board = board;
-        this.associatedProfessor = associatedProfessor;
-        this.teachAssistant = teachAssistant;
+    public Course(String id, String boardId, String professorId, String taId, Set<String> enrolledStudents, String department) {
+        this.id = id;
+        this.boardId = boardId;
+        this.professorId = professorId;
+        this.taId = taId;
+        this.enrolledStudents = enrolledStudents;
+        this.department = department;
+    }
+
+    @DynamoDBHashKey(attributeName = "id")
+    @Override
+    public String getId() {
+        return id;
+    }
+
+
+    @DynamoDBAttribute(attributeName="boardId")
+    public String getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(String boardId) {
+        this.boardId = boardId;
+    }
+
+    @DynamoDBAttribute(attributeName="professorId")
+    public String getProfessorId() {
+        return professorId;
+    }
+
+    public void setProfessorId(String professorId) {
+        this.professorId = professorId;
+    }
+
+    @DynamoDBAttribute(attributeName="taId")
+    public String getTaId() {
+        return taId;
+    }
+
+    public void setTaId(String taId) {
+        this.taId = taId;
+    }
+
+    @DynamoDBAttribute(attributeName="enrolledStudents")
+    public Set<String> getEnrolledStudents() {
+        return enrolledStudents;
+    }
+
+    public void setEnrolledStudents(Set<String> enrolledStudents) {
+        this.enrolledStudents = enrolledStudents;
+    }
+
+    @DynamoDBAttribute(attributeName="department")
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     @Override
     public String toString() {
         return "Course{" +
                 "id=" + id +
-                ", board='" + board + '\'' +
+                ", boardId='" + boardId + '\'' +
+                ", professorId='" + professorId + '\'' +
+                ", taId='" + taId + '\'' +
                 ", enrolledStudents=" + enrolledStudents +
-                ", associatedProfessor='" + associatedProfessor + '\'' +
-                ", teachAssistant='" + teachAssistant + '\'' +
+                ", department='" + department + '\'' +
                 '}';
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getBoard() {
-        return board;
-    }
-
-    public void setBoard(String board) {
-        this.board = board;
-    }
-
-    public List<Long> getEnrolledStudents() {
-        return enrolledStudents;
-    }
-
-    public void setEnrolledStudents(List<Long> enrolledStudents) {
-        this.enrolledStudents = enrolledStudents;
-    }
-
-    public Long getAssociatedProfessor() {
-        return associatedProfessor;
-    }
-
-    public void setAssociatedProfessor(Long associatedProfessor) {
-        this.associatedProfessor = associatedProfessor;
-    }
-
-    public Long getTeachAssistant() {
-        return teachAssistant;
-    }
-
-    public void setTeachAssistant(Long teachAssistant) {
-        this.teachAssistant = teachAssistant;
     }
 }

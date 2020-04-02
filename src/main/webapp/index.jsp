@@ -6,5 +6,6 @@
     <p><a href="webapi/programs">all programs</a>
     <p><a href="webapi/students">all students</a>
     <p><a href="webapi/courses">all courses</a>
+    <p><a href="webapi/echo/env">see env</a>
 </body>
 </html>

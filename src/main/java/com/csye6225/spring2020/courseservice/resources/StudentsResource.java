@@ -2,62 +2,49 @@ package com.csye6225.spring2020.courseservice.resources;
 
 import com.csye6225.spring2020.courseservice.datamodel.Student;
 import com.csye6225.spring2020.courseservice.service.StudentsService;
+import com.csye6225.spring2020.courseservice.utils.ResponseWrapper;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Path("students")
-public class StudentsResource {
-    StudentsService studentsService = new StudentsService();
+public class StudentsResource extends RestResourceTemplate<Student, StudentsService>{
+
+    public StudentsResource() {
+        super(new StudentsService());
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Student> getStudents() {
-        return studentsService.getAllStudents();
+    public ResponseWrapper<List<Student>> getStudents(
+            @QueryParam("department") String department,
+            @QueryParam("firstName") String firstName,
+            @QueryParam("lastName") String lastName
+    ) {
+        Map<String, String> filters = new HashMap<>();
+        if (department != null) {
+            filters.put(department, "department");
+        }
+        if (firstName != null) {
+            filters.put(firstName, "firstName");
+        }
+        if (lastName != null) {
+            filters.put(lastName, "lastName");
+        }
+        return restService.getAllWithMultipleFilter(filters);
     }
 
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public List<Student> getStudentsByDeparment(
-//            @QueryParam("department") String department			) {
-//
-//        if (department == null) {
-//            return profService.getAllStudents();
-//        }
-//        return profService.getStudentsByDepartment(department);
-//
-//    }
 
-    // ... webapi/student/1
+    @Path("/{Id}/register/{courseId}")
     @GET
-    @Path("/{studentId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Student getStudent(@PathParam("studentId") Long studentID) {
-        System.out.println("Student Resource: Looking for: " + studentID);
-        return studentsService.getStudent(studentID);
-    }
-
-    @DELETE
-    @Path("/{studentId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Student deleteStudent(@PathParam("studentId") Long studentId) {
-        return studentsService.deleteStudent(studentId);
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Student addStudent(Student student) {
-        return studentsService.addStudent(student);
-    }
-
-    @PUT
-    @Path("/{studentId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Student updateStudent(@PathParam("studentId") Long profId,
-                                 Student prof) {
-        return studentsService.updateStudentInformation(profId, prof);
+    public ResponseWrapper registerCourse(
+            @PathParam("Id") String Id,
+            @PathParam("courseId") String courseId
+    ) {
+        return restService.registerCourse(Id, courseId);
     }
 }

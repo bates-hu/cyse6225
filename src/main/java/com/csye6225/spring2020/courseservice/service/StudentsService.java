@@ -1,58 +1,57 @@
 package com.csye6225.spring2020.courseservice.service;
 
-import com.csye6225.spring2020.courseservice.datamodel.InMemoryDatabase;
+import com.amazonaws.services.dynamodbv2.datamodeling.TransactionWriteRequest;
+import com.amazonaws.services.dynamodbv2.model.TransactionCanceledException;
+import com.csye6225.spring2020.courseservice.datamodel.Course;
 import com.csye6225.spring2020.courseservice.datamodel.Student;
+import com.csye6225.spring2020.courseservice.utils.ResponseWrapper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 
-public class StudentsService {
-    static HashMap<Long, Student> studentDB = InMemoryDatabase.getStudentDB();
-
+public class StudentsService extends RestService<Student>{
+    private CoursesService coursesService;
     public StudentsService() {
+        super(Student.class);
+        this.coursesService = new CoursesService();
     }
 
-    // GET "..webapi/students"
-    public List<Student> getAllStudents() {
-        //Getting the list
-        ArrayList<Student> list = new ArrayList<>();
-        for (Student student : studentDB.values()) {
-            list.add(student);
+    public ResponseWrapper registerCourse(String studentId, String courseId) {
+        Student student = get(studentId).getBody();
+
+        if (student == null) {
+            return ResponseWrapper.ofErr(1, "student does not exist");
         }
-        return list ;
+        if (student.getRegisteredCourses() == null) {
+            student.setRegisteredCourses(new HashSet<>());
+        }
+        if (student.getRegisteredCourses().contains(courseId)) {
+            return ResponseWrapper.ofErr(1, "already registered");
+        }
+        Course course = coursesService.get(courseId).getBody();
+
+        if (course == null) {
+            return ResponseWrapper.ofErr(1, "course does not exist");
+        }
+        if (course.getEnrolledStudents() == null) {
+            course.setEnrolledStudents(new HashSet<>());
+        }
+        if (course.getEnrolledStudents().contains(studentId)) {
+            return ResponseWrapper.ofErr(1, "alreay enrolled");
+        }
+
+        student.getRegisteredCourses().add(courseId);
+        course.getEnrolledStudents().add(studentId);
+
+        try {
+            TransactionWriteRequest transactionWriteRequest = new TransactionWriteRequest();
+            transactionWriteRequest.addUpdate(student);
+            transactionWriteRequest.addUpdate(course);
+            mapper.transactionWrite(transactionWriteRequest);
+        } catch (TransactionCanceledException tce) {
+            return ResponseWrapper.ofErr(1, "internal error, please try again");
+        }
+
+        return ResponseWrapper.ofSuc();
     }
 
-    public Student addStudent(Student student) {
-        // Next Id
-        long nextAvailableId = studentDB.size() + 1;
-        student.setId(nextAvailableId);
-
-        studentDB.put(nextAvailableId, student);
-
-        return student;
-    }
-
-
-    public Student getStudent(Long studentID) {
-
-        //Simple HashKey Load
-        Student student = studentDB.get(studentID);
-        System.out.println("Item retrieved:");
-        System.out.println(student.toString());
-
-        return student;
-    }
-
-    public Student deleteStudent(Long studentID) {
-        Student deletedStudentDetails = studentDB.get(studentID);
-        studentDB.remove(studentID);
-        return deletedStudentDetails;
-    }
-
-    public Student updateStudentInformation(Long studentID, Student student) {
-        student.setId(studentID);
-        studentDB.put(studentID, student);
-        return student;
-    }
 }
