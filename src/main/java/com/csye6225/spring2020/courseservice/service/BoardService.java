@@ -3,6 +3,9 @@ package com.csye6225.spring2020.courseservice.service;
 import com.csye6225.spring2020.courseservice.datamodel.Board;
 import com.csye6225.spring2020.courseservice.utils.ResponseWrapper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BoardService extends RestService<Board>{
     private CoursesService coursesService;
     public BoardService() {
@@ -20,6 +23,12 @@ public class BoardService extends RestService<Board>{
             return ResponseWrapper.ofErr(11, "course was created");
         }
 
-        return super.addWithGeneratedId(model);
+        super.addWithGeneratedId(model);
+        Map<String, String> filters = new HashMap<>();
+        filters.put(model.getCourseId(), "courseId");
+
+        Board board = getAllWithMultipleFilter(filters).getBody().get(0);
+
+        return ResponseWrapper.ofSuc(board);
     }
 }
