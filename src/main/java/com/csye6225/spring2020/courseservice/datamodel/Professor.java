@@ -1,7 +1,6 @@
 package com.csye6225.spring2020.courseservice.datamodel;
 
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
 import java.util.Date;
@@ -12,17 +11,19 @@ public class Professor extends IdObject{
     private String lastName;
     private String department;
     private Date joiningDate;
+    private String email;
 
     public Professor() {
 
     }
 
-    public Professor(String id, String firstName, String lastName, String department, Date joiningDate) {
+    public Professor(String id, String firstName, String lastName, String department, Date joiningDate, String email) {
         this.id = id;
         this.firstName = firstName;
         this.department = department;
         this.joiningDate = joiningDate;
         this.lastName = lastName;
+        this.email = email;
     }
 
     @DynamoDBHashKey(attributeName = "id")
@@ -67,17 +68,26 @@ public class Professor extends IdObject{
         this.joiningDate = joiningDate;
     }
 
+    @DynamoDBAttribute(attributeName="email")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 
     @Override
     public String toString() {
         return "Professor{" +
-                "id='" + id + '\'' +
-                ", firstName='" + firstName + '\'' +
+                "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", department='" + department + '\'' +
                 ", joiningDate=" + joiningDate +
+                ", email='" + email + '\'' +
+                ", id='" + id + '\'' +
                 '}';
     }
-
 }
 
