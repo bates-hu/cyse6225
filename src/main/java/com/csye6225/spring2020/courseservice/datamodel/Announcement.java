@@ -30,7 +30,7 @@ public class Announcement extends IdObject{
         this.text = text;
     }
 
-    @DynamoDBIndexHashKey(globalSecondaryIndexName="boardId-index", attributeName="payload")
+    @DynamoDBIndexHashKey(globalSecondaryIndexName="boardId-index", attributeName="boardId")
     public String getBoardId() {
         return boardId;
     }

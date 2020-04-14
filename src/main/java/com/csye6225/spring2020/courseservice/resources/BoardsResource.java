@@ -1,5 +1,6 @@
 package com.csye6225.spring2020.courseservice.resources;
 
+import com.csye6225.spring2020.courseservice.datamodel.Announcement;
 import com.csye6225.spring2020.courseservice.datamodel.Board;
 import com.csye6225.spring2020.courseservice.service.BoardService;
 import com.csye6225.spring2020.courseservice.utils.ResponseWrapper;
@@ -27,5 +28,13 @@ public class BoardsResource extends RestResourceTemplate<Board, BoardService> {
             filters.put(courseId, "courseId");
         }
         return restService.getAllWithMultipleFilter(filters);
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Override
+    public ResponseWrapper add(Board model) {
+        return restService.addWithGeneratedId(model);
     }
 }
